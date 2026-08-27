@@ -9,3 +9,7 @@ Tech Stack:
 - Python3
 - Git
 - GitHub
+
+Clone the repository
+git clone <repository url>
+cd <repository name>
