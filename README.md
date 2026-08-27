@@ -2,4 +2,10 @@
 
 Lauren Gilbert
 o Course name: SWENG 861 – Software Construction
-o A short description of your planned CRUD app: TBD
+
+Description: This project is a CRUD application for the SWENG 861 course. The repository demenstrates the use of GitHUb, feature branches, pull requests, and basic practices.
+
+Tech Stack:
+- Python3
+- Git
+- GitHub
