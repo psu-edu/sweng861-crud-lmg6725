@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <script
+        src="https://global.oktacdn.com/okta-auth-js/7.7.0/okta-auth-js.min.js">
+    </script>
+</head>
+
+<body>
+
+    <h1>Logging in...</h1>
+
+    <p id="status">Processing your login...</p>
+
+    <script>
+        const oktaConfig = {
+            issuer: "https://integrator-4866780.okta.com/oauth2/default/",
+            clientId: "0oa1703pa0jxxytNB698",
+            redirectUrl: "http://127.0.0.1:5000/callback",
+            scopes: ["openid", "profile", "email"],
+            pkce: true
+        };
+
+        const oktaAuth = new OktaAuth(oktaConfig);
+
+        async function handleLogin() {
+            try {
+                const tokens = await oktaAuth.token.parseFromUrl();
+
+                console.log("Tokens received:", tokens);
+
+                const idToken = tokens.tokens.idToken.idToken;
+
+                localStorage.setItem("id_token", idToken);
+
+                document.getElementById("status").textContent =
+                    "Login successful!";
+
+                console.log("ID token:", idToken);
+
+            } catch (error) {
+                console.error("Login callback error:", error);
+
+                document.getElementById("status").textContent =
+                    "Login failed.";
+            }
+        }
+
+        handleLogin();
+    </script>
+
+</body>
+</html>

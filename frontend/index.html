@@ -1,14 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'none'; img-src https://lmg6725storage01.blob.core.windows.net">
-  <title>Cloud Storage Image Display</title>
+    <title>Campus Health Portal</title>
 </head>
+
 <body>
-  <h1>Image Stored in Cloud Storage</h1>
-  <img src="https://lmg6725storage01.blob.core.windows.net/images/paris.jpg" alt="Paris">
+
+    <!-- Display the portal title and welcome message. -->
+    <h1>Campus Health Portal</h1>
+    <p>Welcome to the Campus Health Portal!</p>
+
+    <!-- Start the Okta login flow or clear the current session. -->
+    <a href="/login">
+        <button>Login with Okta</button>
+    </a>
+
+    <a href="/logout">
+        <button>Logout</button>
+    </a>
+
+    <!-- Call the protected backend endpoint after login. -->
+    <br><br>
+    <button onclick="callProtected()">
+        Test Protected Endpoint
+    </button>
+    <pre id="output"></pre>
+
+    <script>
+        // Retrieve the current session and call the protected endpoint.
+        async function callProtected() {
+
+            // Check whether the user has an access token before making the request.
+            const sessionResponse =
+                await fetch("/session-info");
+            const sessionData =
+                await sessionResponse.json();
+
+            if (!sessionData.access_token) {
+                document.getElementById("output").textContent =
+                    "Not logged in.";
+                return;
+            }
+
+            // Send the access token as a bearer token for authentication.
+            const response =
+                await fetch("/api/hello", {
+                    headers: {
+                        Authorization:
+                            `Bearer ${sessionData.access_token}`
+                    }
+                });
+
+            // Display the endpoint response in a readable JSON format.
+            const data = await response.json();
+            document.getElementById("output").textContent =
+                JSON.stringify(data, null, 2);
+        }
+    </script>
+
 </body>
 </html>
